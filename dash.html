@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corrida Espacial SEO (Maio-Dez)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0c0a1e;
+            color: #e0e0e0;
+        }
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        .space-background {
+            background-image:
+                radial-gradient(circle at 20% 20%, rgba(255,255,255,0.05) 1px, transparent 1px),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.05) 1px, transparent 1px),
+                radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03) 1px, transparent 1px),
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0.05) 1px, transparent 1px),
+                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 100px 100px;
+            background-position: 0 0, 50px 50px, 25px 25px, 75px 75px, 12px 88px;
+        }
+        .planet {
+            position: relative;
+            transition: transform 0.3s ease-in-out, bottom 0.5s ease-in-out, box-shadow 0.3s ease-in-out;
+            width: 3.2rem;
+            height: 3.2rem;
+        }
+        @media (min-width: 640px) { /* sm */
+            .planet {
+                width: 3.8rem;
+                height: 3.8rem;
+            }
+        }
+        .planet:hover {
+            transform: scale(1.1) !important;
+        }
+        .planet-name-tag {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-4px);
+            white-space: nowrap;
+            color: #cbd5e1;
+        }
+        /* Estilo para planeta com meta batida - MAIS SUTIL */
+        .planet-goal-achieved {
+            animation: planet-glow-subtle 2s infinite alternate;
+        }
+        @keyframes planet-glow-subtle {
+            from {
+                box-shadow: 0 0 8px 1px rgba(255, 215, 0, 0.5), 0 0 12px 3px rgba(255, 215, 0, 0.3);
+            }
+            to {
+                box-shadow: 0 0 12px 3px rgba(255, 223, 0, 0.7), 0 0 18px 5px rgba(255, 223, 0, 0.5);
+            }
+        }
+
+
+        .spaceship-trail {
+            transition: bottom 0.5s ease-in-out;
+            font-size: 1.5rem;
+        }
+         @media (min-width: 640px) { /* sm */
+            .spaceship-trail {
+                font-size: 1.875rem;
+            }
+        }
+        .spaceship-trail::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -15px;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 15px;
+            background: linear-gradient(to top, rgba(255, 165, 0, 0.8), transparent);
+            border-radius: 1.5px;
+            opacity: 0.7;
+        }
+        .asteroid {
+            animation: float-asteroid 3s ease-in-out infinite;
+            transition: bottom 0.5s ease-in-out, opacity 0.3s ease-in-out;
+            font-size: 1.25rem;
+        }
+        @keyframes float-asteroid {
+            0%, 100% { transform: translateY(0) translateX(var(--tx, -50%)); }
+            50% { transform: translateY(-3px) translateX(var(--tx, -50%)); }
+        }
+
+
+        .satellite-marker {
+            position: absolute;
+            text-align: center;
+            animation: float-satellite 3s ease-in-out infinite;
+            transition: bottom 0.5s ease-in-out, opacity 0.3s ease-in-out, left 0.5s ease-in-out;
+            font-size: 1.25rem;
+        }
+        @keyframes float-satellite {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-3px); }
+        }
+
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite ease-in-out;
+            z-index: -1;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        .conquest-star {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            width: 20px; height: 20px;
+        }
+        /* Animação para estrela de conquista - MAIS SUTIL */
+        .star-achieved-animation {
+            animation: star-bounce-subtle 0.6s ease-out forwards, star-pulse-subtle 2s 0.6s infinite alternate;
+        }
+        @keyframes star-bounce-subtle {
+            0% { transform: scale(0.7); opacity: 0.6; }
+            50% { transform: scale(1.15); opacity: 1; } /* Reduzido o scale */
+            70% { transform: scale(0.95); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes star-pulse-subtle {
+            from { opacity: 0.8; transform: scale(1); } /* Opacidade inicial maior para ser visível */
+            to { opacity: 1; transform: scale(1.05); } /* Scale menor */
+        }
+
+
+        .hidden-initially {
+            opacity: 0;
+        }
+        input[type="number"].custom-input {
+            background-color: #1f2937; border: 1px solid #4b5563; color: #ffffff;
+            border-radius: 0.375rem; padding: 0.5rem 0.75rem; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        input[type="number"].custom-input:focus {
+            outline: 2px solid transparent; outline-offset: 2px; border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.5);
+        }
+        .custom-button {
+            font-family: 'Orbitron', sans-serif; background-color: #22d3ee; color: #0f172a;
+            font-weight: bold; padding: 0.75rem 1.5rem; border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            transition: background-color 0.15s ease-in-out;
+        }
+        .custom-button:hover {
+            background-color: #06b6d4;
+        }
+        .text-xxs {
+            font-size: 0.6rem;
+            line-height: 0.8rem;
+        }
+         .month-label-custom {
+            font-size: 0.65rem;
+        }
+        @media (min-width: 640px) { /* sm */
+            .text-xxs {
+                font-size: 0.65rem;
+                line-height: 0.85rem;
+            }
+            .month-label-custom {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4 space-background text-white overflow-x-hidden">
+
+
+    <header class="text-center mb-6">
+        <h1 class="font-orbitron text-3xl sm:text-4xl md:text-5xl font-bold text-cyan-400 tracking-wider">
+            🚀 Corrida Espacial SEO (Maio-Dez) 🌌
+        </h1>
+        <p class="text-base sm:text-lg md:text-xl text-indigo-300 mt-2">Nossa jornada estelar de otimização!</p>
+        <p class="text-xs sm:text-sm text-gray-400 mt-1">UserID: <span id="userIdDisplay">Carregando...</span></p>
+    </header>
+
+
+    <div class="mb-4 flex flex-wrap justify-center gap-x-3 gap-y-1 text-xs px-1">
+        <div class="flex items-center gap-1"><span class="w-3 h-3 bg-green-500 rounded-full"></span><span>Foguete (Realizado)</span></div>
+        <div class="flex items-center gap-1"><span class="w-3 h-3 bg-blue-500 rounded-full border-2 border-blue-300"></span><span>Planeta (Meta)</span></div>
+        <div class="flex items-center gap-1"><span class="text-teal-400 text-lg">🛰️</span><span>Marco Quinzenal</span></div>
+        <div class="flex items-center gap-1"><span class="text-yellow-400 text-lg">☄️</span><span>Marco (50% Meta)</span></div>
+        <div class="flex items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="gold" stroke="orange" stroke-width="1"><path d="M12 2 L15.09 8.09 L22 9.27 L17 14 L18.18 21.02 L12 17.77 L5.82 21.02 L7 14 L2 9.27 L8.91 8.09 L12 2 z"></path></svg><span>Conquista</span></div>
+    </div>
+
+
+    <div class="w-full max-w-6xl bg-gray-900/70 backdrop-blur-md shadow-2xl rounded-xl p-3 sm:p-4 md:p-6 relative">
+        <div class="absolute left-0 top-0 bottom-12 sm:bottom-16 flex flex-col justify-between items-center pr-1 text-xs text-gray-400" style="padding-left: 3px sm:padding-left: 5px;">
+            <span>48</span><span>38.4</span><span>28.8</span><span>19.2</span><span>9.6</span><span>0</span>
+        </div>
+
+
+        <div id="chartPlotArea" class="relative h-[300px] sm:h-[350px] md:h-[400px] border-l border-b border-gray-700 ml-4 sm:ml-6 md:ml-8 mb-6 sm:mb-8">
+            <div class="absolute w-full h-px bg-gray-700/50" style="bottom: 20%;"></div>
+            <div class="absolute w-full h-px bg-gray-700/50" style="bottom: 40%;"></div>
+            <div class="absolute w-full h-px bg-gray-700/50" style="bottom: 60%;"></div>
+            <div class="absolute w-full h-px bg-gray-700/50" style="bottom: 80%;"></div>
+            <div class="absolute w-full h-px bg-gray-700/50" style="bottom: 100%;"></div>
+
+
+
+
+            <div class="absolute inset-0 flex justify-around items-end">
+                <!-- Maio -->
+                <div class="flex flex-col items-center h-full justify-end relative" style="width: 12.5%;">
+                    <div id="maiPlanet" class="planet absolute bg-gradient-to-br from-blue-500 to-green-400 rounded-full flex items-center justify-center shadow-lg text-center" style="bottom: 6.25%;">
+                        <span class="planet-name-tag text-xxs font-bold">Terra</span>
+                        <span class="text-xxs opacity-80" id="maiPlanetMetaValue">(Meta: 3)</span>
+                    </div>
+                    <div id="maiAsteroid" class="asteroid absolute text-yellow-400" style="bottom: 3.125%; transform: translateX(-50%);">☄️</div>
+                    <div id="maiSpaceship" class="spaceship-trail absolute" style="bottom: 6.25%; transform: translateX(0%);">
+                        <span>🚀</span>
+                        <svg id="maiConquestStar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gold" stroke="orange" stroke-width="1" class="absolute -top-2.5 -right-2.5 conquest-star hidden-initially"><path d="M12 2 L15.09 8.09 L22 9.27 L17 14 L18.18 21.02 L12 17.77 L5.82 21.02 L7 14 L2 9.27 L8.91 8.09 L12 2 z"></path></svg>
+                    </div>
+                    <span class="absolute -bottom-5 month-label-custom text-gray-300">Maio</span>
+                </div>
+                <!-- Junho -->
+                <div class="flex flex-col items-center h-full justify-end relative" style="width: 12.5%;">
+                    <div id="junPlanet" class="planet absolute bg-gradient-to-br from-red-500 to-orange-400 rounded-full flex items-center justify-center shadow-lg text-center" style="bottom: 12.5%;">
+                        <span class="planet-name-tag text-xxs font-bold">Marte</span>
+                        <span class="text-xxs opacity-80" id="junPlanetMetaValue">(Meta: 6)</span>
+                    </div>
+                    <div id="junAsteroid" class="asteroid absolute text-yellow-400" style="bottom: 6.25%; transform: translateX(-50%);">☄️</div>
+                    <div id="junSpaceship" class="spaceship-trail absolute" style="bottom: 8.333%; transform: translateX(0%);">
+                        <span>🚀</span>
+                        <svg id="junConquestStar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gold" stroke="orange" stroke-width="1" class="absolute -top-2.5 -right-2.5 conquest-star hidden-initially"><path d="M12 2 L15.09 8.09 L22 9.27 L17 14 L18.18 21.02 L12 17.77 L5.82 21.02 L7 14 L2 9.27 L8.91 8.09 L12 2 z"></path></svg>
+                    </div>
+                    <span class="absolute -bottom-5 month-label-custom text-gray-300">Jun</span>
+                </div>
+                <!-- Julho -->
+                <div class="flex flex-col items-center h-full justify-end relative" style="width: 12.5%;">
+                    <div id="julPlanet" class="planet absolute bg-gradient-to-br from-orange-600 to-yellow-500 rounded-full flex items-center justify-center shadow-lg text-center" style="bottom: 18.75%;">
+                        <span class="planet-name-tag text-xxs font-bold">Júpiter</span>
+                        <span class="text-xxs opacity-80" id="julPlanetMetaValue">(Meta: 9)</span>
+                    </div>
+                    <div id="julAsteroid" class="asteroid absolute text-yellow-400" style="bottom: 9.375%; transform: translateX(-50%);">☄️</div>
+                    <div id="julSpaceship" class="spaceship-trail absolute" style="bottom: 14.583%; transform: translateX(0%);">
+                        <span>🚀</span>
+                        <svg id="julConquestStar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gold" stroke="orange" stroke-width="1" class="absolute -top-2.5 -right-2.5 conquest-star hidden-initially"><path d="M12 2 L15.09 8.09 L22 9.27 L17 14 L18.18 21.02 L12 17.77 L5.82 21.02 L7 14 L2 9.27 L8.91 8.09 L12 2 z"></path></svg>
+                    </div>
+                    <span class="absolute -bottom-5 month-label-custom text-gray-300">Jul</span>
+                </div>
+                <!-- Agosto -->
+                <div class="flex flex-col items-center h-full justify-end relative" style="width: 12.5%;">
+                    <div id="agoPlanet" class="planet absolute bg-gradient-to-br from-yellow-400 to-amber-300 rounded-full flex items-center justify-center shadow-lg text-center" style="bottom: 25%;">
+                        <span class="planet-name-tag text-xxs font-bold">Saturno</span>
+                        <span class="text-xxs opacity-80" id="agoPlanetMetaValue">(Meta: 12)</span>
+                    </div>
+                    <div id="agoAsteroid" class="asteroid absolute text-yellow-400" style="bottom: 12.5%; transform: translateX(-50%);">☄️</div>
+                    <div id="agoSpaceship" class="spaceship-trail absolute" style="bottom: 25%; transform: translateX(0%);">
+                        <span>🚀</span>
+                        <svg id="agoConquestStar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gold" stroke="orange" stroke-width="1" class="absolute -top-2.5 -right-2.5 conquest-star hidden-initially"><path d="M12 2 L15.09 8.09 L22 9.27 L17 14 L18.18 21.02 L12 17.77 L5.82 21.02 L7 14 L2 9.27 L8.91 8.09 L12 2 z"></path></svg>
+                    </div>
+                    <span class="absolute -bottom-5 month-label-custom text-gray-300">Ago</span>
+                </div>
+                <!-- Setembro -->
+                <div class="flex flex-col items-center h-full justify-end relative" style="width: 12.5%;">
+                    <div id="setPlanet" class="planet absolute bg-gradient-to-br from-cyan-400 to-sky-300 rounded-full flex items-center justify-center shadow-lg text-center" style="bottom: 31.25%;">
+                        <span class="planet-name-tag text-xxs font-bold">Urano</span>
+                        <span class="text-xxs opacity-80" id="setPlanetMetaValue">(Meta: 15)</span>
+                    </div>
+                    <div id="setAsteroid" class="asteroid absolute text-yellow-400" style="bottom: 15.625%; transform: translateX(-50%);">☄️</div>
+                    <div id="setSpaceship" class="spaceship-trail absolute" style="bottom: 33.333%; transform: translateX(0%);">
+                        <span>🚀</span>
+                        <svg id="setConquestStar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gold" stroke="orange" stroke-width="1" class="absolute -top-2.5 -right-2.5 conquest-star hidden-initially"><path d="M12 2 L15.09 8.09 L22 9.27 L17 14 L18.18 21.02 L12 17.77 L5.82 21.02 L7 14 L2 9.27 L8.91 8.09 L12 2 z"></path></svg>
+                    </div>
+                    <span class="absolute -bottom-5 month-label-custom text-gray-300">Set</span>
+                </div>
+                <!-- Outubro -->
+                <div class="flex flex-col items-center h-full justify-end relative" style="width: 12.5%;">
+                    <div id="outPlanet" class="planet absolute bg-gradient-to-br from-blue-600 to-indigo-500 rounded-full flex items-center justify-center shadow-lg text-center" style="bottom: 37.5%;">
+                        <span class="planet-name-tag text-xxs font-bold">Netuno</span>
+                        <span class="text-xxs opacity-80" id="outPlanetMetaValue">(Meta: 18)</span>
+                    </div>
+                    <div id="outAsteroid" class="asteroid absolute text-yellow-400" style="bottom: 18.75%; transform: translateX(-50%);">☄️</div>
+                    <div id="outSpaceship" class="spaceship-trail absolute" style="bottom: 41.667%; transform: translateX(0%);">
+                        <span>🚀</span>
+                        <svg id="outConquestStar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gold" stroke="orange" stroke-width="1" class="absolute -top-2.5 -right-2.5 conquest-star hidden-initially"><path d="M12 2 L15.09 8.09 L22 9.27 L17 14 L18.18 21.02 L12 17.77 L5.82 21.02 L7 14 L2 9.27 L8.91 8.09 L12 2 z"></path></svg>
+                    </div>
+                    <span class="absolute -bottom-5 month-label-custom text-gray-300">Out</span>
+                </div>
+                <!-- Novembro -->
+                <div class="flex flex-col items-center h-full justify-end relative" style="width: 12.5%;">
+                    <div id="novPlanet" class="planet absolute bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg text-center" style="bottom: 43.75%;">
+                        <span class="planet-name-tag text-xxs font-bold">Exoplaneta</span>
+                        <span class="text-xxs opacity-80" id="novPlanetMetaValue">(Meta: 21)</span>
+                    </div>
+                    <div id="novAsteroid" class="asteroid absolute text-yellow-400" style="bottom: 21.875%; transform: translateX(-50%);">☄️</div>
+                    <div id="novSpaceship" class="spaceship-trail absolute" style="bottom: 52.083%; transform: translateX(0%);">
+                        <span>🚀</span>
+                        <svg id="novConquestStar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gold" stroke="orange" stroke-width="1" class="absolute -top-2.5 -right-2.5 conquest-star hidden-initially"><path d="M12 2 L15.09 8.09 L22 9.27 L17 14 L18.18 21.02 L12 17.77 L5.82 21.02 L7 14 L2 9.27 L8.91 8.09 L12 2 z"></path></svg>
+                    </div>
+                    <span class="absolute -bottom-5 month-label-custom text-gray-300">Nov</span>
+                </div>
+                <!-- Dezembro -->
+                <div class="flex flex-col items-center h-full justify-end relative" style="width: 12.5%;">
+                    <div id="dezPlanet" class="planet absolute bg-gradient-to-br from-pink-500 to-rose-400 rounded-full flex items-center justify-center shadow-lg text-center" style="bottom: 50%;">
+                        <span class="planet-name-tag text-xxs font-bold">Nebulosa</span>
+                        <span class="text-xxs opacity-80" id="dezPlanetMetaValue">(Meta: 24)</span>
+                    </div>
+                    <div id="dezAsteroid" class="asteroid absolute text-yellow-400" style="bottom: 25%; transform: translateX(-50%);">☄️</div>
+                    <div id="dezSpaceship" class="spaceship-trail absolute" style="bottom: 62.5%; transform: translateX(0%);">
+                        <span>🚀</span>
+                        <svg id="dezConquestStar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gold" stroke="orange" stroke-width="1" class="absolute -top-2.5 -right-2.5 conquest-star hidden-initially"><path d="M12 2 L15.09 8.09 L22 9.27 L17 14 L18.18 21.02 L12 17.77 L5.82 21.02 L7 14 L2 9.27 L8.91 8.09 L12 2 z"></path></svg>
+                    </div>
+                    <span class="absolute -bottom-5 month-label-custom text-gray-300">Dez</span>
+                </div>
+            </div>
+           
+            <div id="maiSatellite" class="satellite-marker text-teal-400" style="bottom: 4.167%; left: 6.25%;">🛰️</div>
+            <div id="junSatellite" class="satellite-marker text-teal-400" style="bottom: 6.25%; left: 18.75%;">🛰️</div>
+            <div id="julSatellite" class="satellite-marker text-teal-400" style="bottom: 10.417%; left: 31.25%;">🛰️</div>
+            <div id="agoSatellite" class="satellite-marker text-teal-400" style="bottom: 20.833%; left: 43.75%;">🛰️</div>
+            <div id="setSatellite" class="satellite-marker text-teal-400" style="bottom: 27.083%; left: 56.25%;">🛰️</div>
+            <div id="outSatellite" class="satellite-marker text-teal-400" style="bottom: 37.5%; left: 68.75%;">🛰️</div>
+            <div id="novSatellite" class="satellite-marker text-teal-400" style="bottom: 45.833%; left: 81.25%;">🛰️</div>
+            <div id="dezSatellite" class="satellite-marker text-teal-400" style="bottom: 54.167%; left: 93.75%;">🛰️</div>
+
+
+
+
+            <svg class="absolute inset-0 w-full h-full" style="margin-left: calc(-1 * (0.5rem + 2px)); margin-bottom: -24px; @media (min-width: 640px) { margin-left: -24px; } @media (min-width: 768px) { margin-left: -32px; }">
+                <line id="metaLineMai" x1="0%" y1="100%" x2="0%" y2="0%" stroke="#60a5fa" stroke-width="2" stroke-dasharray="5,5" />
+                <line id="metaLineJun" x1="0%" y1="0%" x2="0%" y2="0%" stroke="#60a5fa" stroke-width="2" stroke-dasharray="5,5" />
+                <line id="metaLineJul" x1="0%" y1="0%" x2="0%" y2="0%" stroke="#60a5fa" stroke-width="2" stroke-dasharray="5,5" />
+                <line id="metaLineAgo" x1="0%" y1="0%" x2="0%" y2="0%" stroke="#60a5fa" stroke-width="2" stroke-dasharray="5,5" />
+                <line id="metaLineSet" x1="0%" y1="0%" x2="0%" y2="0%" stroke="#60a5fa" stroke-width="2" stroke-dasharray="5,5" />
+                <line id="metaLineOut" x1="0%" y1="0%" x2="0%" y2="0%" stroke="#60a5fa" stroke-width="2" stroke-dasharray="5,5" />
+                <line id="metaLineNov" x1="0%" y1="0%" x2="0%" y2="0%" stroke="#60a5fa" stroke-width="2" stroke-dasharray="5,5" />
+                <line id="metaLineDez" x1="0%" y1="0%" x2="0%" y2="0%" stroke="#60a5fa" stroke-width="2" stroke-dasharray="5,5" />
+               
+                <line id="realizadoMai1to15" x1="0%" y1="0%" x2="0%" y2="0%" stroke="#22c55e" stroke-width="3" />
+                <line id="realizadoMai15to30" x1="0%" y1="0%" x2="0%" y2="0%" stroke="#22c55e" stroke-width="3" />
+                <line id="realizadoJun1to15" x1="0%" y1="0%" x2="0%" y2="0%" stroke="#22c55e" stroke-width="3" />
+                <line id="realizadoJun15to30" x1="0%" y1="0%" x2="0%" y2="0%" stroke="#22c55e" stroke-width="3" />
+                <line id="realizadoJul1to15" x1="0%" y1="0%" x2="0%" y2="0%" stroke="#22c55e" stroke-width="3" />
+                <line id="realizadoJul15to30" x1="0%" y1="0%" x2="0%" y2="0%" stroke="#22c55e" stroke-width="3" />
+                <line id="realizadoAgo1to15" x1="0%" y1="0%" x2="0%" y2="0%" stroke="#22c55e" stroke-width="3" />
+                <line id="realizadoAgo15to30" x1="0%" y1="0%" x2="0%" y2="0%" stroke="#22c55e" stroke-width="3" />
+                <line id="realizadoSet1to15" x1="0%" y1="0%" x2="0%" y2="0%" stroke="#22c55e" stroke-width="3" />
+                <line id="realizadoSet15to30" x1="0%" y1="0%" x2="0%" y2="0%" stroke="#22c55e" stroke-width="3" />
+                <line id="realizadoOut1to15" x1="0%" y1="0%" x2="0%" y2="0%" stroke="#22c55e" stroke-width="3" />
+                <line id="realizadoOut15to30" x1="0%" y1="0%" x2="0%" y2="0%" stroke="#22c55e" stroke-width="3" />
+                <line id="realizadoNov1to15" x1="0%" y1="0%" x2="0%" y2="0%" stroke="#22c55e" stroke-width="3" />
+                <line id="realizadoNov15to30" x1="0%" y1="0%" x2="0%" y2="0%" stroke="#22c55e" stroke-width="3" />
+                <line id="realizadoDez1to15" x1="0%" y1="0%" x2="0%" y2="0%" stroke="#22c55e" stroke-width="3" />
+                <line id="realizadoDez15to30" x1="0%" y1="0%" x2="0%" y2="0%" stroke="#22c55e" stroke-width="3" />
+            </svg>
+        </div>
+    </div>
+
+
+    <div class="w-full max-w-6xl bg-gray-800/80 backdrop-blur-sm shadow-xl rounded-lg p-3 sm:p-4 md:p-6 mt-8">
+        <h2 class="font-orbitron text-lg sm:text-xl md:text-2xl font-bold text-cyan-300 mb-4 sm:mb-6 text-center">Alimentação de Dados do Gráfico</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+            <div>
+                <h3 class="text-sm sm:text-md font-semibold text-indigo-300 mb-1 sm:mb-2">Maio</h3>
+                <label for="maiMetaInput" class="block text-xs font-medium text-gray-300">Meta Final:</label>
+                <input type="number" id="maiMetaInput" class="custom-input mt-1 block w-full text-xs sm:text-sm" placeholder="Ex: 3" min="0" max="48">
+                <label for="maiRealizadoQuinzenalInput" class="block text-xs font-medium text-gray-300 mt-2">Realizado Dia 15:</label>
+                <input type="number" id="maiRealizadoQuinzenalInput" class="custom-input mt-1 block w-full text-xs sm:text-sm" placeholder="Ex: 2" min="0" max="48">
+                <label for="maiRealizadoInput" class="block text-xs font-medium text-gray-300 mt-2">Realizado Dia 30:</label>
+                <input type="number" id="maiRealizadoInput" class="custom-input mt-1 block w-full text-xs sm:text-sm" placeholder="Ex: 3" min="0" max="48">
+            </div>
+            <div>
+                <h3 class="text-sm sm:text-md font-semibold text-indigo-300 mb-1 sm:mb-2">Junho</h3>
+                <label for="junMetaInput" class="block text-xs font-medium text-gray-300">Meta Final:</label>
+                <input type="number" id="junMetaInput" class="custom-input mt-1 block w-full text-xs sm:text-sm" placeholder="Ex: 6" min="0" max="48">
+                <label for="junRealizadoQuinzenalInput" class="block text-xs font-medium text-gray-300 mt-2">Realizado Dia 15:</label>
+                <input type="number" id="junRealizadoQuinzenalInput" class="custom-input mt-1 block w-full text-xs sm:text-sm" placeholder="Ex: 3" min="0" max="48">
+                <label for="junRealizadoInput" class="block text-xs font-medium text-gray-300 mt-2">Realizado Dia 30:</label>
+                <input type="number" id="junRealizadoInput" class="custom-input mt-1 block w-full text-xs sm:text-sm" placeholder="Ex: 4" min="0" max="48">
+            </div>
+            <div>
+                <h3 class="text-sm sm:text-md font-semibold text-indigo-300 mb-1 sm:mb-2">Julho</h3>
+                <label for="julMetaInput" class="block text-xs font-medium text-gray-300">Meta Final:</label>
+                <input type="number" id="julMetaInput" class="custom-input mt-1 block w-full text-xs sm:text-sm" placeholder="Ex: 9" min="0" max="48">
+                <label for="julRealizadoQuinzenalInput" class="block text-xs font-medium text-gray-300 mt-2">Realizado Dia 15:</label>
+                <input type="number" id="julRealizadoQuinzenalInput" class="custom-input mt-1 block w-full text-xs sm:text-sm" placeholder="Ex: 5" min="0" max="48">
+                <label for="julRealizadoInput" class="block text-xs font-medium text-gray-300 mt-2">Realizado Dia 30:</label>
+                <input type="number" id="julRealizadoInput" class="custom-input mt-1 block w-full text-xs sm:text-sm" placeholder="Ex: 7" min="0" max="48">
+            </div>
+            <div>
+                <h3 class="text-sm sm:text-md font-semibold text-indigo-300 mb-1 sm:mb-2">Agosto</h3>
+                <label for="agoMetaInput" class="block text-xs font-medium text-gray-300">Meta Final:</label>
+                <input type="number" id="agoMetaInput" class="custom-input mt-1 block w-full text-xs sm:text-sm" placeholder="Ex: 12" min="0" max="48">
+                <label for="agoRealizadoQuinzenalInput" class="block text-xs font-medium text-gray-300 mt-2">Realizado Dia 15:</label>
+                <input type="number" id="agoRealizadoQuinzenalInput" class="custom-input mt-1 block w-full text-xs sm:text-sm" placeholder="Ex: 10" min="0" max="48">
+                <label for="agoRealizadoInput" class="block text-xs font-medium text-gray-300 mt-2">Realizado Dia 30:</label>
+                <input type="number" id="agoRealizadoInput" class="custom-input mt-1 block w-full text-xs sm:text-sm" placeholder="Ex: 12" min="0" max="48">
+            </div>
+            <div>
+                <h3 class="text-sm sm:text-md font-semibold text-indigo-300 mb-1 sm:mb-2">Setembro</h3>
+                <label for="setMetaInput" class="block text-xs font-medium text-gray-300">Meta Final:</label>
+                <input type="number" id="setMetaInput" class="custom-input mt-1 block w-full text-xs sm:text-sm" placeholder="Ex: 15" min="0" max="48">
+                <label for="setRealizadoQuinzenalInput" class="block text-xs font-medium text-gray-300 mt-2">Realizado Dia 15:</label>
+                <input type="number" id="setRealizadoQuinzenalInput" class="custom-input mt-1 block w-full text-xs sm:text-sm" placeholder="Ex: 13" min="0" max="48">
+                <label for="setRealizadoInput" class="block text-xs font-medium text-gray-300 mt-2">Realizado Dia 30:</label>
+                <input type="number" id="setRealizadoInput" class="custom-input mt-1 block w-full text-xs sm:text-sm" placeholder="Ex: 16" min="0" max="48">
+            </div>
+            <div>
+                <h3 class="text-sm sm:text-md font-semibold text-indigo-300 mb-1 sm:mb-2">Outubro</h3>
+                <label for="outMetaInput" class="block text-xs font-medium text-gray-300">Meta Final:</label>
+                <input type="number" id="outMetaInput" class="custom-input mt-1 block w-full text-xs sm:text-sm" placeholder="Ex: 18" min="0" max="48">
+                <label for="outRealizadoQuinzenalInput" class="block text-xs font-medium text-gray-300 mt-2">Realizado Dia 15:</label>
+                <input type="number" id="outRealizadoQuinzenalInput" class="custom-input mt-1 block w-full text-xs sm:text-sm" placeholder="Ex: 18" min="0" max="48">
+                <label for="outRealizadoInput" class="block text-xs font-medium text-gray-300 mt-2">Realizado Dia 30:</label>
+                <input type="number" id="outRealizadoInput" class="custom-input mt-1 block w-full text-xs sm:text-sm" placeholder="Ex: 20" min="0" max="48">
+            </div>
+            <div>
+                <h3 class="text-sm sm:text-md font-semibold text-indigo-300 mb-1 sm:mb-2">Novembro</h3>
+                <label for="novMetaInput" class="block text-xs font-medium text-gray-300">Meta Final:</label>
+                <input type="number" id="novMetaInput" class="custom-input mt-1 block w-full text-xs sm:text-sm" placeholder="Ex: 21" min="0" max="48">
+                <label for="novRealizadoQuinzenalInput" class="block text-xs font-medium text-gray-300 mt-2">Realizado Dia 15:</label>
+                <input type="number" id="novRealizadoQuinzenalInput" class="custom-input mt-1 block w-full text-xs sm:text-sm" placeholder="Ex: 22" min="0" max="48">
+                <label for="novRealizadoInput" class="block text-xs font-medium text-gray-300 mt-2">Realizado Dia 30:</label>
+                <input type="number" id="novRealizadoInput" class="custom-input mt-1 block w-full text-xs sm:text-sm" placeholder="Ex: 25" min="0" max="48">
+            </div>
+            <div>
+                <h3 class="text-sm sm:text-md font-semibold text-indigo-300 mb-1 sm:mb-2">Dezembro</h3>
+                <label for="dezMetaInput" class="block text-xs font-medium text-gray-300">Meta Final:</label>
+                <input type="number" id="dezMetaInput" class="custom-input mt-1 block w-full text-xs sm:text-sm" placeholder="Ex: 24" min="0" max="48">
+                <label for="dezRealizadoQuinzenalInput" class="block text-xs font-medium text-gray-300 mt-2">Realizado Dia 15:</label>
+                <input type="number" id="dezRealizadoQuinzenalInput" class="custom-input mt-1 block w-full text-xs sm:text-sm" placeholder="Ex: 26" min="0" max="48">
+                <label for="dezRealizadoInput" class="block text-xs font-medium text-gray-300 mt-2">Realizado Dia 30:</label>
+                <input type="number" id="dezRealizadoInput" class="custom-input mt-1 block w-full text-xs sm:text-sm" placeholder="Ex: 30" min="0" max="48">
+            </div>
+        </div>
+        <div class="mt-6 sm:mt-8 text-center">
+            <button id="updateChartButton" class="custom-button">
+                Atualizar Gráfico 🌠
+            </button>
+        </div>
+    </div>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const maxChartValue = 48;
+
+
+        const numStars = 100;
+        const body = document.body;
+        for (let i = 0; i < numStars; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.width = `${Math.random() * 2 + 0.5}px`;
+            star.style.height = star.style.width;
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            star.style.animationDelay = `${Math.random() * 3}s`;
+            body.insertBefore(star, body.firstChild);
+        }
+
+
+        const userIdDisplay = document.getElementById('userIdDisplay');
+        if (typeof __app_id !== 'undefined' && typeof __initial_auth_token !== 'undefined') {
+            userIdDisplay.textContent = `EquipeAlfa-${(__app_id || 'demoApp').substring(0,4)}`;
+        } else {
+            userIdDisplay.textContent = `EquipeVisitante-${Math.random().toString(36).substring(2, 6)}`;
+        }
+       
+        const monthIds = ['mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+        const elements = {};
+        monthIds.forEach(id => {
+            elements[id] = {
+                planet: document.getElementById(`${id}Planet`),
+                planetMetaValue: document.getElementById(`${id}PlanetMetaValue`),
+                spaceship: document.getElementById(`${id}Spaceship`),
+                asteroid: document.getElementById(`${id}Asteroid`),
+                conquestStar: document.getElementById(`${id}ConquestStar`),
+                satellite: document.getElementById(`${id}Satellite`),
+                metaInput: document.getElementById(`${id}MetaInput`),
+                realizadoInput: document.getElementById(`${id}RealizadoInput`),
+                realizadoQuinzenalInput: document.getElementById(`${id}RealizadoQuinzenalInput`)
+            };
+        });
+
+
+        elements.lines = {
+            metaLineMai: document.getElementById('metaLineMai'),
+            metaLineJun: document.getElementById('metaLineJun'),
+            metaLineJul: document.getElementById('metaLineJul'),
+            metaLineAgo: document.getElementById('metaLineAgo'),
+            metaLineSet: document.getElementById('metaLineSet'),
+            metaLineOut: document.getElementById('metaLineOut'),
+            metaLineNov: document.getElementById('metaLineNov'),
+            metaLineDez: document.getElementById('metaLineDez'),
+
+
+            realizadoMai1to15: document.getElementById('realizadoMai1to15'),
+            realizadoMai15to30: document.getElementById('realizadoMai15to30'),
+            realizadoJun1to15: document.getElementById('realizadoJun1to15'),
+            realizadoJun15to30: document.getElementById('realizadoJun15to30'),
+            realizadoJul1to15: document.getElementById('realizadoJul1to15'),
+            realizadoJul15to30: document.getElementById('realizadoJul15to30'),
+            realizadoAgo1to15: document.getElementById('realizadoAgo1to15'),
+            realizadoAgo15to30: document.getElementById('realizadoAgo15to30'),
+            realizadoSet1to15: document.getElementById('realizadoSet1to15'),
+            realizadoSet15to30: document.getElementById('realizadoSet15to30'),
+            realizadoOut1to15: document.getElementById('realizadoOut1to15'),
+            realizadoOut15to30: document.getElementById('realizadoOut15to30'),
+            realizadoNov1to15: document.getElementById('realizadoNov1to15'),
+            realizadoNov15to30: document.getElementById('realizadoNov15to30'),
+            realizadoDez1to15: document.getElementById('realizadoDez1to15'),
+            realizadoDez15to30: document.getElementById('realizadoDez15to30'),
+        };
+       
+        elements.updateButton = document.getElementById('updateChartButton');
+
+
+        const numMonths = monthIds.length;
+        const xEndMonthCoords = {};
+        const xMidMonthCoords = {};
+        const columnWidthPercentage = 100 / numMonths;
+        const xStartFirstMonthLinePoint = (columnWidthPercentage / 4).toFixed(2) + "%";
+
+
+
+
+        monthIds.forEach((id, index) => {
+            xEndMonthCoords[id] = (index * columnWidthPercentage + columnWidthPercentage / 2).toFixed(2) + "%";
+            if (index === 0) {
+                xMidMonthCoords[id] = (columnWidthPercentage / 2).toFixed(2) + "%";
+            } else {
+                const prevMonthId = monthIds[index - 1];
+                xMidMonthCoords[id] = ((parseFloat(xEndMonthCoords[prevMonthId].slice(0,-1)) + parseFloat(xEndMonthCoords[id].slice(0,-1))) / 2).toFixed(2) + "%";
+            }
+        });
+
+
+
+
+        function initializeFormWithChartData() {
+            const defaultValues = {
+                mai: { meta: 3,  q: 2,  f: 3  },  
+                jun: { meta: 6,  q: 3,  f: 4  },  
+                jul: { meta: 9,  q: 5,  f: 7  },  
+                ago: { meta: 12, q: 10, f: 12 },
+                set: { meta: 15, q: 13, f: 16 },
+                out: { meta: 18, q: 18, f: 20 },  
+                nov: { meta: 21, q: 22, f: 25 },  
+                dez: { meta: 24, q: 26, f: 30 }  
+            };
+            monthIds.forEach(id => {
+                if (elements[id] && elements[id].metaInput) {
+                    elements[id].metaInput.value = defaultValues[id].meta;
+                    elements[id].realizadoQuinzenalInput.value = defaultValues[id].q;
+                    elements[id].realizadoInput.value = defaultValues[id].f;
+                } else {
+                    console.error(`Elemento de input não encontrado para o mês: ${id}`);
+                }
+            });
+        }
+
+
+        function updateChartData() {
+            const data = {};
+            monthIds.forEach(id => {
+                data[id] = {
+                    meta: Math.max(0, Math.min(maxChartValue, parseInt(elements[id].metaInput.value) || 0)),
+                    realizado: Math.max(0, Math.min(maxChartValue, parseInt(elements[id].realizadoInput.value) || 0)),
+                    realizadoQuinzenal: Math.max(0, Math.min(maxChartValue, parseInt(elements[id].realizadoQuinzenalInput.value) || 0))
+                };
+            });
+
+
+            monthIds.forEach(id => {
+                const starElement = elements[id].conquestStar;
+                const planetElement = elements[id].planet;
+
+
+                elements[id].planet.style.bottom = `${(data[id].meta / maxChartValue) * 100}%`;
+                elements[id].planetMetaValue.textContent = `(Meta: ${data[id].meta})`;
+                elements[id].spaceship.style.bottom = `${(data[id].realizado / maxChartValue) * 100}%`;
+                elements[id].asteroid.style.bottom = `${(data[id].meta / 2 / maxChartValue) * 100}%`;
+                elements[id].asteroid.style.opacity = data[id].realizado >= data[id].meta / 2 ? '1' : '0';
+               
+                if (data[id].realizado >= data[id].meta && data[id].meta > 0) {
+                    starElement.style.opacity = '1';
+                    starElement.classList.add('star-achieved-animation');
+                    starElement.classList.remove('hidden-initially');
+                    planetElement.classList.add('planet-goal-achieved');
+                } else {
+                    starElement.style.opacity = '0';
+                    starElement.classList.remove('star-achieved-animation');
+                    starElement.classList.add('hidden-initially');
+                    planetElement.classList.remove('planet-goal-achieved');
+                }
+               
+                elements[id].satellite.style.bottom = `${(data[id].realizadoQuinzenal / maxChartValue) * 100}%`;
+                elements[id].satellite.style.left = xMidMonthCoords[id];
+            });
+
+
+            // Linhas de META
+            elements.lines.metaLineMai.setAttribute('x1', xStartFirstMonthLinePoint);
+            elements.lines.metaLineMai.setAttribute('y1', `100%`);
+            elements.lines.metaLineMai.setAttribute('x2', xEndMonthCoords.mai);
+            elements.lines.metaLineMai.setAttribute('y2', `${100 - (data.mai.meta / maxChartValue) * 100}%`);
+
+
+            monthIds.slice(1).forEach((id, index) => {
+                const prevMonthId = monthIds[index];
+                const capId = id.charAt(0).toUpperCase() + id.slice(1);
+                const lineElId = `metaLine${capId}`;
+                const lineEl = elements.lines[lineElId];
+
+
+                if (lineEl) {
+                    lineEl.setAttribute('x1', xEndMonthCoords[prevMonthId]);
+                    lineEl.setAttribute('y1', `${100 - (data[prevMonthId].meta / maxChartValue) * 100}%`);
+                    lineEl.setAttribute('x2', xEndMonthCoords[id]);
+                    lineEl.setAttribute('y2', `${100 - (data[id].meta / maxChartValue) * 100}%`);
+                } else {
+                     console.error(`Elemento de linha da meta não encontrado: ${lineElId}`);
+                }
+            });
+           
+            // Linhas de REALIZADO
+            let prevMonthEndY = 100;
+            let prevMonthEndX = xStartFirstMonthLinePoint;
+
+
+            monthIds.forEach((id) => {
+                const capId = id.charAt(0).toUpperCase() + id.slice(1);
+                const line1to15 = elements.lines[`realizado${capId}1to15`];
+                const line15to30 = elements.lines[`realizado${capId}15to30`];
+
+
+                const currentQPctY = 100 - (data[id].realizadoQuinzenal / maxChartValue) * 100;
+                const currentFPctY = 100 - (data[id].realizado / maxChartValue) * 100;
+
+
+                if(line1to15 && line15to30) {
+                    line1to15.setAttribute('x1', prevMonthEndX);
+                    line1to15.setAttribute('y1', `${prevMonthEndY}%`);
+                    line1to15.setAttribute('x2', xMidMonthCoords[id]);
+                    line1to15.setAttribute('y2', `${currentQPctY}%`);
+
+
+                    line15to30.setAttribute('x1', xMidMonthCoords[id]);
+                    line15to30.setAttribute('y1', `${currentQPctY}%`);
+                    line15to30.setAttribute('x2', xEndMonthCoords[id]);
+                    line15to30.setAttribute('y2', `${currentFPctY}%`);
+                   
+                    prevMonthEndY = currentFPctY;
+                    prevMonthEndX = xEndMonthCoords[id];
+                } else {
+                    console.error(`Elementos de linha de realizado não encontrados para: ${capId}`);
+                }
+            });
+        }
+
+
+        if (elements.updateButton) {
+            elements.updateButton.addEventListener('click', updateChartData);
+        }
+       
+        initializeFormWithChartData();
+        updateChartData();
+    });
+    </script>
+</body>
+</html>
+
+
+
